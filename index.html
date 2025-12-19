@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Intermediate HTML/CSS/JS - Task</title>
+  <style>
+    /* ---------- Base ---------- */
+    :root{
+      --accent:#0f766e;
+      --muted:#6b7280;
+      --bg:#f8fafc;
+      --card:#ffffff;
+      --danger:#dc2626;
+      --success:#16a34a;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background: linear-gradient(180deg, #f1f8f7 0%, #ffffff 100%);
+      color:#0f172a;
+      padding:24px;
+    }
+
+    /* ---------- Header / Nav (Flexbox) ---------- */
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:20px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .logo{
+      width:56px;height:56px;border-radius:12px;
+      background:linear-gradient(135deg,var(--accent),#047857);
+      display:flex;align-items:center;justify-content:center;color:white;font-weight:700;
+      box-shadow:0 6px 18px rgba(2,6,23,0.06);
+    }
+    nav{
+      display:flex;gap:12px;align-items:center;
+    }
+    nav a{
+      color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:8px;
+    }
+    nav a.primary{
+      background:var(--accent);color:white;font-weight:600;
+    }
+
+    /* ---------- Main (Grid) ---------- */
+    main{
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:20px;
+      align-items:start;
+    }
+
+    /* Card */
+    .card{
+      background:var(--card);
+      border-radius:12px;
+      padding:18px;
+      box-shadow:0 8px 24px rgba(2,6,23,0.06);
+    }
+    h2{margin:0 0 12px 0;color:var(--accent)}
+
+    /* ---------- Contact Form ---------- */
+    form .row{display:flex;gap:12px}
+    label{display:block;font-weight:600;font-size:14px;margin-bottom:6px}
+    input[type="text"], input[type="email"], textarea, select{
+      width:100%;padding:10px 12px;border-radius:8px;border:1px solid #e6edf0;
+      font-size:14px;background:#fbfeff;outline:none;
+    }
+    textarea{min-height:120px;resize:vertical}
+    .field{margin-bottom:12px}
+    .error{color:var(--danger);font-size:13px;margin-top:6px}
+    .success-msg{color:var(--success);font-weight:600;margin-top:8px}
+
+    .btn{
+      display:inline-block;padding:10px 14px;border-radius:10px;background:var(--accent);color:white;
+      border:none;font-weight:600;cursor:pointer;
+    }
+    .btn.secondary{background:#e6f6f4;color:var(--accent);border:1px solid rgba(15,118,110,.12)}
+
+    /* ---------- To-Do List ---------- */
+    .todo-list{display:flex;flex-direction:column;gap:10px}
+    .add-row{display:flex;gap:8px;margin-bottom:12px}
+    .task{
+      display:flex;align-items:center;justify-content:space-between;padding:10px;border-radius:10px;
+      border:1px solid #edf4f3;
+    }
+    .task .left{display:flex;gap:10px;align-items:center}
+    .task .title{font-weight:600}
+    .task.done .title{text-decoration:line-through;color:var(--muted);font-weight:500}
+    .task .actions button{background:none;border:none;cursor:pointer;padding:6px;border-radius:6px}
+    .small-muted{color:var(--muted);font-size:13px}
+
+    /* ---------- Responsive ---------- */
+    @media (max-width:980px){
+      main{grid-template-columns:1fr;}
+    }
+    @media (max-width:520px){
+      header{flex-direction:column;align-items:flex-start;gap:8px}
+      .logo{width:48px;height:48px}
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <div class="logo">HT</div>
+      <div>
+        <div style="font-weight:700">Intermediate HTML, CSS, JS</div>
+        <div class="small-muted">DOM manipulation • Forms • Responsive layouts</div>
+      </div>
+    </div>
+
+    <nav>
+      <a href="#contact">Contact Form</a>
+      <a href="#todo" class="primary">To-Do List</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- LEFT: Contact form & instructions -->
+    <section class="card" id="contact">
+      <h2>Create a Contact Form</h2>
+      <p class="small-muted">Objective: Build a form with various input fields. Actions: create and style, add JS validation.</p>
+
+      <form id="contactForm" novalidate>
+        <div class="field">
+          <label for="name">Name <span class="small-muted">(required)</span></label>
+          <input id="name" name="name" type="text" placeholder="Your name" required>
+          <div class="error" id="err-name" aria-live="polite"></div>
+        </div>
+
+        <div class="row">
+          <div class="field" style="flex:1">
+            <label for="email">Email <span class="small-muted">(required)</span></label>
+            <input id="email" name="email" type="email" placeholder="you@example.com" required>
+            <div class="error" id="err-email" aria-live="polite"></div>
+          </div>
+
+          <div class="field" style="width:160px">
+            <label for="subject">Subject</label>
+            <select id="subject" name="subject">
+              <option value="">Choose...</option>
+              <option>General</option>
+              <option>Support</option>
+              <option>Feedback</option>
+            </select>
+            <div class="error" id="err-subject"></div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="message">Message <span class="small-muted">(required)</span></label>
+          <textarea id="message" name="message" placeholder="Write your message" required></textarea>
+          <div class="error" id="err-message" aria-live="polite"></div>
+        </div>
+
+        <div style="display:flex;gap:10px;align-items:center;margin-top:10px">
+          <button type="submit" class="btn">Submit</button>
+          <button type="button" id="resetBtn" class="btn secondary">Reset</button>
+          <div id="formStatus" style="margin-left:auto"></div>
+        </div>
+      </form>
+    </section>
+
+    <!-- RIGHT: To-Do List (dynamic) -->
+    <aside class="card" id="todo">
+      <h2>Dynamic To-Do List</h2>
+      <p class="small-muted">Objective: Learn DOM manipulation. Actions: add/remove tasks dynamically.</p>
+
+      <div class="todo">
+        <div class="add-row">
+          <input id="newTask" type="text" placeholder="Add a new task..." style="flex:1;padding:10px;border-radius:8px;border:1px solid #e6edf0">
+          <button id="addTaskBtn" class="btn">Add</button>
+        </div>
+
+        <div id="todoList" class="todo-list" aria-live="polite"></div>
+
+        <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
+          <button id="clearAll" class="btn secondary">Clear All</button>
+          <div class="small-muted" style="margin-left:auto" id="taskCount">0 tasks</div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    /* ---------------------------
+       FORM VALIDATION (step 2)
+       --------------------------- */
+    const form = document.getElementById('contactForm');
+    const err = {
+      name: document.getElementById('err-name'),
+      email: document.getElementById('err-email'),
+      subject: document.getElementById('err-subject'),
+      message: document.getElementById('err-message')
+    };
+    const status = document.getElementById('formStatus');
+
+    function emailValid(email){
+      // Simple but robust regex for typical emails
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      // clear errors
+      Object.values(err).forEach(el => el.textContent='');
+      status.textContent='';
+
+      const name = form.name.value.trim();
+      const email = form.email.value.trim();
+      const subject = form.subject.value.trim();
+      const message = form.message.value.trim();
+
+      let ok = true;
+      if(!name){ err.name.textContent = 'Please enter your name.'; ok = false; }
+      if(!email){ err.email.textContent = 'Please enter your email.'; ok = false; }
+      else if(!emailValid(email)){ err.email.textContent = 'Please enter a valid email address.'; ok = false; }
+      if(!message){ err.message.textContent = 'Please write a short message.'; ok = false; }
+
+      if(!ok) return;
+
+      // Simulate successful submit (here we just show message)
+      status.innerHTML = '<span class="success-msg">Form submitted successfully — thank you!</span>';
+      form.reset();
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', ()=>{
+      form.reset();
+      Object.values(err).forEach(el => el.textContent='');
+      status.textContent='';
+    });
+
+    /* ---------------------------
+       DYNAMIC TO-DO LIST (step 4)
+       --------------------------- */
+    const todoListEl = document.getElementById('todoList');
+    const newTaskInput = document.getElementById('newTask');
+    const addTaskBtn = document.getElementById('addTaskBtn');
+    const clearAllBtn = document.getElementById('clearAll');
+    const taskCount = document.getElementById('taskCount');
+
+    // tasks stored as { id, title, done }
+    let tasks = JSON.parse(localStorage.getItem('tasks_v1') || '[]');
+
+    function saveTasks(){
+      localStorage.setItem('tasks_v1', JSON.stringify(tasks));
+      updateCount();
+    }
+    function updateCount(){
+      taskCount.textContent = tasks.length + (tasks.length===1 ? ' task' : ' tasks');
+    }
+
+    function renderTasks(){
+      todoListEl.innerHTML = '';
+      if(tasks.length === 0){
+        todoListEl.innerHTML = '<div class="small-muted">No tasks yet — add one!</div>';
+        updateCount();
+        return;
+      }
+      tasks.forEach(t => {
+        const taskEl = document.createElement('div');
+        taskEl.className = 'task' + (t.done ? ' done':'');
+        taskEl.dataset.id = t.id;
+
+        const left = document.createElement('div');
+        left.className = 'left';
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.checked = !!t.done;
+        checkbox.addEventListener('change', () => toggleTask(t.id));
+
+        const title = document.createElement('div');
+        title.className = 'title';
+        title.textContent = t.title;
+
+        left.appendChild(checkbox);
+        left.appendChild(title);
+
+        const actions = document.createElement('div');
+        actions.className = 'actions';
+        // delete button
+        const del = document.createElement('button');
+        del.title = 'Delete';
+        del.innerHTML = '🗑';
+        del.addEventListener('click', () => deleteTask(t.id));
+
+        // edit button
+        const edit = document.createElement('button');
+        edit.title = 'Edit';
+        edit.innerHTML = '✏';
+        edit.addEventListener('click', () => editTask(t.id));
+
+        actions.appendChild(edit);
+        actions.appendChild(del);
+
+        taskEl.appendChild(left);
+        taskEl.appendChild(actions);
+        todoListEl.appendChild(taskEl);
+      });
+      updateCount();
+    }
+
+    function addTask(text){
+      const trimmed = (text||'').trim();
+      if(!trimmed) return;
+      const task = { id: Date.now().toString(36), title: trimmed, done:false };
+      tasks.unshift(task); // newest on top
+      saveTasks();
+      renderTasks();
+    }
+
+    function toggleTask(id){
+      tasks = tasks.map(t => t.id === id ? {...t, done: !t.done} : t);
+      saveTasks();
+      renderTasks();
+    }
+
+    function deleteTask(id){
+      tasks = tasks.filter(t => t.id !== id);
+      saveTasks();
+      renderTasks();
+    }
+
+    function editTask(id){
+      const t = tasks.find(x => x.id===id);
+      if(!t) return;
+      const newTitle = prompt('Edit task', t.title);
+      if(newTitle === null) return;
+      const trimmed = newTitle.trim();
+      if(trimmed) {
+        tasks = tasks.map(x => x.id === id ? {...x, title: trimmed} : x);
+        saveTasks();
+        renderTasks();
+      }
+    }
+
+    addTaskBtn.addEventListener('click', ()=>{
+      addTask(newTaskInput.value);
+      newTaskInput.value='';
+      newTaskInput.focus();
+    });
+
+    newTaskInput.addEventListener('keyup', (e)=>{
+      if(e.key === 'Enter') addTaskBtn.click();
+    });
+
+    clearAllBtn.addEventListener('click', ()=>{
+      if(!confirm('Clear all tasks?')) return;
+      tasks = [];
+      saveTasks();
+      renderTasks();
+    });
+
+    // initial render
+    renderTasks();
+
+    /* -----------
+      Extra accessibility / usability
+       ----------- */
+    // simple deep link handling for nav
+    document.querySelectorAll('nav a').forEach(a=>{
+      a.addEventListener('click', (ev)=>{
+        // allow default anchor behaviour, smooth scroll
+      });
+    });
+
+  </script>
+
+</body>
+</html>
